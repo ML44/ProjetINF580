@@ -3,16 +3,15 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 
-
 public class poems {
-	
+
 	public static void main(String[] args) throws Exception{
-	    Scanner sc = new Scanner(new File("dataGeneration/data/" + args[0]+".txt"));
+	    Scanner sc = new Scanner(new File("data/" + args[0]+".txt"));
 	    String buffer1 = "";
 	    String buffer2 = "";
 	    HashMap<String,HashMap<String,Integer>> table = new HashMap<String,HashMap<String,Integer>>();
-	    
-	    buffer2 = sc.next();	  
+
+	    buffer2 = sc.next();
 
 	    while(sc.hasNext()){
 	    	buffer1 = buffer2;
@@ -38,18 +37,15 @@ public class poems {
 	    	}
 
 	    }
-	    
+
 	    sc.close();
-	    
+
 	    for(String s1 : table.keySet())
 	    {
 	    	HashMap<String,Integer> t2 = table.get(s1);
 		    for(String s2 : t2.keySet())
 	    	{
-		    	if(t2.get(s2)>1)
-		    	{
 		    		System.out.println(t2.get(s2) + "\t" + s1 + "\t" + s2);
-		    	}
 		    }
 	    }
 	}

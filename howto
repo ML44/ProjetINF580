@@ -1,0 +1,13 @@
+HOWTO
+
+#COMPILER poems:
+javac poems.java
+
+#UTILISER poems (en lisant data/hugo.txt et en écrivant dans sortie.out):
+java poems hugo > sortie.out
+
+#COMPILER syllabes:
+javac syllabes.java
+
+#UTILISER java
+java syllabes COUCOU
