@@ -9,12 +9,14 @@ public class syllabes {
 		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_syllabes.dat")));
 
 		int i=0;
+		out.write("param : word syl :=\n");
 		while(sc.hasNext()){
 			buffer = sc.next();
-			out.write(i + "\t" + compteSyllabes(buffer) + "\t" + buffer + "\n");
+			out.write(i + " \"" + buffer + "\" " + compteSyllabes(buffer) + "\n");
 			i++;
 		}
 
+		out.write(";");
 		sc.close();
 		out.close();
 

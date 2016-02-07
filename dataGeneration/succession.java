@@ -42,17 +42,28 @@ public class succession {
 
 	    sc.close();
 
-			int i=0;
+		out.write("param : word nextword freq :=\n");
+		
+		int i=0;
 	    for(String s1 : table.keySet())
 	    {
 	    	HashMap<String,Integer> t2 = table.get(s1);
+			
+			int j=0;
 		    for(String s2 : t2.keySet())
 	    	{
-		    		out.write(i + "\t" + t2.get(s2) + "\t" + s1 + "\t" + s2 + "\n");
+		    		j+=t2.get(s2);
+		    }
+			
+		    for(String s2 : t2.keySet())
+	    	{
+		    		out.write(i + " " + s1 + " " + s2 + " "+ (( (double) t2.get(s2)) / j) + "\n");
 						i++;
 		    }
 	    }
-			out.close();
+		out.write(";");
+		
+		out.close();
 	}
 
 }
