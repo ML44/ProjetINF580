@@ -1,13 +1,11 @@
 HOWTO
 
-#COMPILER poems:
-javac poems.java
-
-#UTILISER poems (en lisant data/hugo.txt et en écrivant dans sortie.out):
-java poems hugo > sortie.out
-
-#COMPILER syllabes:
+#COMPILER:
+javac normalisation.java
 javac syllabes.java
+javac succession.java
 
-#UTILISER java
-java syllabes COUCOU
+#UTILISER (en lisant data/monTexte.txt):
+java normalisation monTexte (écrit dans data/monTexte.norm)
+java syllabes monTexte (écrit dans data/monTexte_syllabes.dat)
+java succession monTexte (écrit dans data/monTexte_successtions.dat)

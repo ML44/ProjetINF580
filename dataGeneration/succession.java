@@ -1,12 +1,14 @@
-import java.io.File;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
 
-public class poems {
+public class succession {
 
 	public static void main(String[] args) throws Exception{
-	    Scanner sc = new Scanner(new File("data/" + args[0]+".txt"));
+	    Scanner sc = new Scanner(new File("data/" + args[0]+".norm"));
+			PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_succession.dat")));
+
 	    String buffer1 = "";
 	    String buffer2 = "";
 	    HashMap<String,HashMap<String,Integer>> table = new HashMap<String,HashMap<String,Integer>>();
@@ -40,14 +42,17 @@ public class poems {
 
 	    sc.close();
 
+			int i=0;
 	    for(String s1 : table.keySet())
 	    {
 	    	HashMap<String,Integer> t2 = table.get(s1);
 		    for(String s2 : t2.keySet())
 	    	{
-		    		System.out.println(t2.get(s2) + "\t" + s1 + "\t" + s2);
+		    		out.write(i + "\t" + t2.get(s2) + "\t" + s1 + "\t" + s2 + "\n");
+						i++;
 		    }
 	    }
+			out.close();
 	}
 
 }
