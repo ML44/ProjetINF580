@@ -7,42 +7,50 @@ import java.util.Scanner;
 public class poems {
 	
 	public static void main(String[] args) throws Exception{
-		int k = 2;
-	    Scanner sc = new Scanner(new File("data/" + args[0]+".txt"));
-	    String[] buffer_old = new String[k];
-	    HashMap<String[],Integer> table = new HashMap<String[],Integer>();
-	    int j;
+	    Scanner sc = new Scanner(new File("dataGeneration/data/" + args[0]+".txt"));
+	    String buffer1 = "";
+	    String buffer2 = "";
+	    HashMap<String,HashMap<String,Integer>> table = new HashMap<String,HashMap<String,Integer>>();
 	    
-	    for(int i=0;i<k;i++)
-	    {
-	    	if(sc.hasNext())
-	    	{
-		    	buffer_old[i] = sc.next();	    		
-	    	}
-	    	else {System.out.println("ERREUR : texte trop court."); return;}
-	    }
-	    
-	    do{
-	    	String[] buffer = new String[k];
-	    	for(int i=0;i<k-1;i++)
-	    	{
-	    		buffer[i] = buffer_old[i+1];
-	    	}
-    		buffer[k-1] = sc.next();
+	    buffer2 = sc.next();	  
 
-	    	if(table.containsKey(buffer)) {j = table.get(buffer) + 1;}
-	    	else {j=1;}
-	    	table.put(buffer, j);
-	    	buffer_old = buffer;
-	    }while(sc.hasNext());
+	    while(sc.hasNext()){
+	    	buffer1 = buffer2;
+	    	buffer2 = sc.next();
+
+	    	if(table.containsKey(buffer1))
+	    	{
+	    		HashMap<String,Integer> table2 = table.get(buffer1);
+	    		if(table2.containsKey(buffer2))
+	    		{
+	    			table2.put(buffer2, table2.get(buffer2)+1);
+	    		}
+	    		else
+	    		{
+		    		table2.put(buffer2, 1);
+	    		}
+	    	}
+	    	else
+	    	{
+	    		HashMap<String,Integer> temp = new HashMap<String,Integer>();
+	    		temp.put(buffer2, 1);
+	    		table.put(buffer1, temp);
+	    	}
+
+	    }
 	    
 	    sc.close();
 	    
-	    for(String[] val : table.keySet())
+	    for(String s1 : table.keySet())
 	    {
+	    	HashMap<String,Integer> t2 = table.get(s1);
+		    for(String s2 : t2.keySet())
 	    	{
-	    		System.out.println(table.get(val) + "\t" + val[0] + "\t" + val[1]);
-	    	}
+		    	if(t2.get(s2)>1)
+		    	{
+		    		System.out.println(t2.get(s2) + "\t" + s1 + "\t" + s2);
+		    	}
+		    }
 	    }
 	}
 
