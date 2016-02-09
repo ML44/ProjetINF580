@@ -1,23 +1,62 @@
 import java.io.*;
 import java.util.Scanner;
+import java.util.HashMap;
+
 
 public class syllabes {
 
 	public static void main(String[] args) throws Exception{
-		Scanner sc = new Scanner(new File("data/" + args[0]+".norm"));
-		String buffer;
+		
+		
+		/***
+		*
+		*    Calcul de la hashmap mot -> int
+		*
+		***/
+		
+		
+	Scanner scan_index = new Scanner(new File("data/" + args[0]+"_index.dat"));
+	HashMap<Integer,String> index = new HashMap<Integer,String>();
+    
+	String mot;
+	int numero_mot;
+	
+	scan_index.nextLine();
+	scan_index.nextLine();
+	
+	String test;
+	int total=0;
+	
+	while(scan_index.hasNext()){
+		test = scan_index.next();
+		if(!test.equals(";")){
+			numero_mot = Integer.parseInt(test);
+			mot = scan_index.next();
+			index.put(numero_mot,mot);
+			total++;
+		}
+	}
+		
+	scan_index.close();
+		
+	/***
+	*
+	*    Sortie
+	*
+	***/
+	
+		
+		
 		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_syllabes.dat")));
 
-		int i=0;
-		out.write("param : word syl :=\n");
-		while(sc.hasNext()){
-			buffer = sc.next();
-			out.write(i + " \"" + buffer + "\" " + compteSyllabes(buffer) + "\n");
-			i++;
+		out.write("param : syllabes : mot nb_syllabes :=\n");
+		out.write("# numero_mot nb_syllabes\n");
+			
+		for(int i=0;i<total;i++){
+			out.write(i + " " + compteSyllabes(index.get(i)) + "\n");
 		}
 
 		out.write(";");
-		sc.close();
 		out.close();
 
 
@@ -26,6 +65,8 @@ public class syllabes {
 	public static int compteSyllabes(String mot){
 		String consonnes = "BCDFGHJKLMNPQRSTVWXZ";
 		String voyelles = "AEIOUY";
+
+		if(mot.equals("mot_vide")){return 0;}
 
 		String type = "";
 		for(int i=0; i<mot.length();i++)
@@ -39,6 +80,7 @@ public class syllabes {
 				type+='C';
 			}
 			else{
+				System.out.println(mot);
 				System.out.println("ERREUR : Le mot ne doit contenir que des lettres majuscules.");
 				return 0;
 			}

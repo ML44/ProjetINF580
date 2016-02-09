@@ -33,7 +33,9 @@ public class enchainement {
 			index.put(mot,numero_mot);
 		}
 	}
-				
+			
+	scan_index.close();
+	
 		/***
 		*
 		*    Calcul de la hashmap mot, mot -> occurences
