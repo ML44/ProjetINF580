@@ -6,7 +6,7 @@ param word{N} symbolic;#ensemble des mots
 param l integer, >0;#longueur de la phrase
 Set L = 1..l;
 var x1{L};#premier vers
-var x2[L];#2e vers
+var x2{L};#2e vers
 
 param pieds{N} integer;#nombre de pieds de chaque mot
 param rime{N} integer;#classe d'équivalence pour la rime

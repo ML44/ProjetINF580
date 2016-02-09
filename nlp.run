@@ -1,5 +1,21 @@
 #nlp.run
-data ...
-data 
-data 
+model nlp.mod;
+
+data mots;
+data enchainement;
+data syllabes;
+data rimes;
+
+option solver ilogcp;
+option ilogcp_options "logverbosity=terse";
+solve;
+for {i in L} {
+  printf " %s", word[x1[i]];
+}
+printf "\n";
+
+for {i in L} {
+  printf " %s", word[x2[i]];
+}
+printf "\n";
 

@@ -8,7 +8,7 @@ Générer 2 vers de $n$ pieds qui riment.
 
 Contraintes :
 
-- Rimer
+- Rimer : pour l'instant, on vérifie les 5 dernières lettres de 2 mots : si elle coincident, ils riment.
 
 - Nombre de pieds
 	
