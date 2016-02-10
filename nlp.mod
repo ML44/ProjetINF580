@@ -3,12 +3,12 @@ param n;#nombre de mots
 set N = 0..n;
 param index{N} symbolic;#ensemble des mots
 
-param l integer, >0;#longueur de la phrase
+param l integer = 24;#longueur de la phrase
 set L = 1..l;
-var x1{L};#premier vers
-var x2{L};#2e vers
+#var x1{L};#premier vers
+#var x2{L};#2e vers
 
-param syllabes{N} integer;#nombre de pieds de chaque mot
+param syllabes{N} integer, default 0;#nombre de pieds de chaque mot
 param rimes{N} integer;#classe d'équivalence pour la rime
 param enchainement{N, N} integer, default 0;#fréquence à laquelle on a trouvé mot1, mot2
 
