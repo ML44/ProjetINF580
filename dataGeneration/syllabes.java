@@ -10,7 +10,7 @@ public class syllabes {
 		
 		/***
 		*
-		*    Calcul de la hashmap mot -> int
+		*    Calcul de la hashmap int -> mot
 		*
 		***/
 		
