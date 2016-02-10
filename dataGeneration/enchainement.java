@@ -15,7 +15,7 @@ public class enchainement {
 	
 	
 	Scanner scan_index = new Scanner(new File("data/" + args[0]+"_index.dat"));
-	HashMap<Integer,String> index = new HashMap<Integer,String>();
+	HashMap<String,Integer> index = new HashMap<String,Integer>();
    
 	String mot;
 	int numero_mot;
@@ -31,7 +31,7 @@ public class enchainement {
 		if(!test.equals(";")){
 			numero_mot = Integer.parseInt(test);
 			mot = scan_index.next();
-			index.put(numero_mot,mot);
+			index.put(mot,numero_mot);
 			total++;
 		}
 	}
@@ -79,7 +79,6 @@ public class enchainement {
 
 		sc.close();
 
-
 		/***
 		*
 		*    Sortie .dat
@@ -90,39 +89,20 @@ public class enchainement {
 		out.write("param : enchainement : mot1 mot2 valeur :=\n");
 		out.write("# numero_mot1 numero_mot2 valeur\n");
 		
-		String m1;
-		String m2;
-		
-		for(int i1=0;i1<total;i1++)
+		for(int i=0;i<total;i++)
 		{
-			m1 = index.get(i1);
-			if(table.containsKey(m1))
+			out.write(0 + " " + i + " "+ 0 + "\n");
+		}
+		
+		for(String m1 : table.keySet())
+		{
+			HashMap<String,Integer> table2 = table.get(m1);
+			for(String m2 : table2.keySet())
 			{
-				HashMap<String,Integer> table2 = table.get(m1);
-				
-				for(int i2=0;i2<total;i2++)
-				{
-					m2 = index.get(i2);
-					if(table2.containsKey(m2))
-					{
-						out.write(i1 + " " + i2 + " "+ (table2.get(m2)) + "\n");
-					}
-					else
-					{
-						//out.write(i1 + " " + i2 + " "+ 0 + "\n");
-					}	
-				}
-				
-			}
-			else
-			{
-				for(int i2=0;i2<total;i2++)
-				{
-					m2 = index.get(i2);
-					//out.write(i1 + " " + i2 + " "+ 0 + "\n");	
-				}				
+				out.write(index.get(m1) + " " + index.get(m2) + " "+ (table2.get(m2)) + "\n");
 			}
 		}
+		
 		out.write(";");
 		
 		out.close();
