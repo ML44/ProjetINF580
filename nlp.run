@@ -1,10 +1,10 @@
 #nlp.run
 model nlp.mod;
 
-data mots;
-data enchainement;
-data syllabes;
-data rimes;
+data dataGeneration/data/blacklabel_rimes.dat;
+data dataGeneration/data/blacklabel_enchainement.dat;
+data dataGeneration/data/blacklabel_syllabes.dat;
+data dataGeneration/data/blacklabel_index.dat;
 
 option solver ilogcp;
 option ilogcp_options "logverbosity=terse";
