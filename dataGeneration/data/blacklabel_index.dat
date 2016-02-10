@@ -1,4 +1,4 @@
-param : index : mot :=
+param : index :=
 # mot numero_mot
 0 mot_vide
 1 NOUS
@@ -45,3 +45,4 @@ param : index : mot :=
 42 EST
 43 FAITE
 ;
+

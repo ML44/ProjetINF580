@@ -24,7 +24,7 @@ public class rimes {
 
 		Integer numeroMot;
 		String test;
-		out.write("param : word rime :=\n");
+		out.write("param : rimes :=\n");
 		while (sc.hasNext()) {
 			test = sc.next();
 			if (!test.equals(";")) {

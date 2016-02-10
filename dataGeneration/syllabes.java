@@ -49,7 +49,7 @@ public class syllabes {
 		
 		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_syllabes.dat")));
 
-		out.write("param : syllabes : mot nb_syllabes :=\n");
+		out.write("param : syllabes :=\n");
 		out.write("# numero_mot nb_syllabes\n");
 			
 		for(int i=0;i<total;i++){

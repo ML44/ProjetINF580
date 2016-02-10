@@ -7,7 +7,7 @@ public class index {
 
 	public static void main(String[] args) throws Exception{
 	    Scanner sc = new Scanner(new File("data/" + args[0]+".norm"));
-			PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_index.dat")));
+		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_index.dat")));
 
 	    String buffer = "";
 	    HashMap<String,Integer> table = new HashMap<String,Integer>();
@@ -30,16 +30,23 @@ public class index {
 
 	    sc.close();
 
-		out.write("param : index : mot :=\n");
+		out.write("param : index :=\n");
 		out.write("# mot numero_mot\n");
 
 	    for(int k=0;k<i;k++)
 	    {
 		 	out.write(k + " " + table_inv.get(k) + "\n");
 	    }
-		out.write(";");
-		
+		out.write(";\n\n");
 		out.close();
+		
+		PrintWriter out_n =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_n.dat")));
+		
+		out_n.write("param n :=" + (i-1) + " ;");
+		
+		out_n.close();
+		
+		
 	}
 
 }
