@@ -10,7 +10,7 @@ var x2{L};#2e vers
 
 param pieds{N} integer;#nombre de pieds de chaque mot
 param rime{N} integer;#classe d'équivalence pour la rime
-param valeur{N, N} integer;#fréquence à laquelle on a trouvé mot1, mot2
+param valeur{N, N} integer, default -1;#fréquence à laquelle on a trouvé mot1, mot2
 
 subject to nbrePieds1 : sum{i in L} pieds[x1[i]] = 12;
 subject to nbrePieds2 : sum{i in L} pieds[x2[i]] = 12;
