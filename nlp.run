@@ -11,18 +11,21 @@ option solver ilogcp;
 option ilogcp_options "logverbosity=terse";
 solve;
 
-for {i in L} {
-  printf " %s", index[x1[i]];
+for {b in L} {
+	for{i in N} {
+		if m1[b, i] = 1 then {
+			printf " %s", index[i];
+		}
+	}
 }
 
 printf "\n";
-printf "\n";
 
-for {i in L} {
-  printf " %s", index[x2[i]];
+for {b in L} {
+	for{i in N} {
+		if m2[b, i] = 1 then {
+			printf " %s", index[i];
+		}
+	}
 }
-printf "\n";
-
-printf "%s", sum{i in N} syllabes[i] * U1[i];
-
 printf "\n";
