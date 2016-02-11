@@ -1,20 +1,22 @@
 #nlp.run
 model nlp.mod;
 
-data dataGeneration/data/blacklabel_rimes.dat;
-data dataGeneration/data/blacklabel_enchainement.dat;
-data dataGeneration/data/blacklabel_syllabes.dat;
-data dataGeneration/data/blacklabel_index.dat;
-data dataGeneration/data/blacklabel_n.dat;
+data dataGeneration/data/hugo_short_rimes.dat;
+data dataGeneration/data/hugo_short_enchainement.dat;
+data dataGeneration/data/hugo_short_syllabes.dat;
+data dataGeneration/data/hugo_short_index.dat;
+data dataGeneration/data/hugo_short_n.dat;
 
 option solver ilogcp;
-option ilogcp_options "logverbosity=terse";
+option ilogcp_options "logverbosity=terse timelimit=1000";
 solve;
 
 for {b in L} {
 	for{i in N} {
-		if m1[b, i] = 1 then {
-			printf " %s", index[i];
+		if i > 0 then {
+			if m1[b, i] = 1 then {
+				printf " %s", index[i];
+			}
 		}
 	}
 }
@@ -23,8 +25,10 @@ printf "\n";
 
 for {b in L} {
 	for{i in N} {
-		if m2[b, i] = 1 then {
-			printf " %s", index[i];
+		if i > 0 then {
+			if m2[b, i] = 1 then {
+				printf " %s", index[i];
+			}
 		}
 	}
 }
