@@ -7,8 +7,8 @@ data dataGeneration/data/blacklabel_syllabes.dat;
 data dataGeneration/data/blacklabel_index.dat;
 data dataGeneration/data/blacklabel_n.dat;
 
-option solver ilogcp;
-option ilogcp_options "logverbosity=terse";
+option solver cplex;
+option cplex_options "mipdisplay=2";
 solve;
 
 for {b in L} {

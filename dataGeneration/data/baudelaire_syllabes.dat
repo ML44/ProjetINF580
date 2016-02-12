@@ -1,4 +1,4 @@
-param : syllabes : mot nb_syllabes :=
+param : syllabes :=
 # numero_mot nb_syllabes
 0 0
 1 1
