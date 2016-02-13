@@ -89,7 +89,8 @@ public class enchainement {
 		out.write("param : enchainement :=\n");
 		out.write("# numero_mot1 numero_mot2 valeur\n");
 		
-		for(int i=0;i<total;i++)
+		out.write(0 + " " + 0 + " "+ -1 + "\n");
+		for(int i=1;i<total;i++)
 		{
 			out.write(0 + " " + i + " "+ 1 + "\n");
 		}

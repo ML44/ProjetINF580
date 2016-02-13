@@ -8,7 +8,7 @@ data dataGeneration/data/hugo_short_index.dat;
 data dataGeneration/data/hugo_short_n.dat;
 
 option solver ilogcp;
-option ilogcp_options "logverbosity=terse timelimit=500";
+option ilogcp_options "logverbosity=terse timelimit=1000";
 solve;
 
 for {b in L} {
