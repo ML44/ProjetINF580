@@ -1,4 +1,4 @@
-param : index :=
+param : index : mot :=
 # mot numero_mot
 0 mot_vide
 1 LES
@@ -6660,4 +6660,3 @@ param : index :=
 6657 FRATERNEL
 6658 JOINT
 ;
-
