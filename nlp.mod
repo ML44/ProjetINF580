@@ -4,7 +4,7 @@ set N = 0..n;
 param index{N} symbolic;#ensemble des mots
 
 param nbrePieds = 6;
-param l integer = 2 * nbrePieds;#longueur de la phrase
+param l integer = nbrePieds;#longueur de la phrase
 set L = 1..l;
 set presqueL = 1..(l-1);
 
@@ -22,6 +22,7 @@ subject to NombreDeSyllabes2 : sum{b in L} sum{i in N} m2[b, i] * syllabes[i] = 
 subject to rimeOK : (sum{i in N} m1[l, i] * rimes[i]) = (sum{i in N} m1[l, i] * rimes[i]);
 subject to motFin1 : (sum{i in N} m1[l, i] * syllabes[i]) > 0;
 subject to motFin2 : (sum{i in N} m2[l, i] * syllabes[i]) > 0;
-
+subject to mots01 : sum{b in presqueL, i in N, j in N} (syllabes[i] * m1[b, i] + syllabes[j] * m1[b+1, j]) > 0;
+subject to mots02 : sum{b in presqueL, i in N, j in N} (syllabes[i] * m2[b, i] + syllabes[j] * m2[b+1, j]) > 0;
 
 maximize objective : sum{b in presqueL, i in N, j in N} enchainement[i, j] * (m1[b, i] * m1[b+1, j] + m2[b, i] * m2[b+1, j]);
