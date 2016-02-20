@@ -13,14 +13,14 @@ public class rimes {
 		LinkedList<String> KeyList = new LinkedList<String>();
 		HashMap<String, HashSet<Integer>> rimes = new HashMap<String, HashSet<Integer>>();
 
-		Scanner sc = new Scanner(new File("data/" + args[0] + "_index.dat"));
+		Scanner sc = new Scanner(new File("data/index.dat"));
 		String ending;
 		String buffer;
 		sc.nextLine();
 		sc.nextLine();
 
 		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(
-				"data/" + args[0] + "_rimes.dat")));
+				"data/rimes.dat")));
 
 		Integer numeroMot;
 		String test;

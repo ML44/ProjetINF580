@@ -9,8 +9,8 @@ public class normalisation {
 
 	// 1e étape : lecture ligne par ligne pour enlever les accents
 
-		BufferedReader in = new BufferedReader(new FileReader("data/"+s+".txt"));
-		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+s+".tmp")));
+		BufferedReader in = new BufferedReader(new FileReader("txt/"+s+".txt"));
+		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/text.tmp")));
 
 		String line;
 
@@ -28,8 +28,8 @@ public class normalisation {
 	// 2e étape : lecture caractère par caractère pour mettre en majuscule et enlever la ponctuation sauf les espaces
 
 		int c=0, c_old=' ';
-		FileInputStream in2 = new FileInputStream("data/"+s+".tmp");
-		FileOutputStream out2 = new FileOutputStream("data/"+s+".norm");
+		FileInputStream in2 = new FileInputStream("data/text.tmp");
+		FileOutputStream out2 = new FileOutputStream("data/text.norm");
 
 		while(c!=-1){
 			c = in2.read();
@@ -47,6 +47,6 @@ public class normalisation {
 		out2.close();
 
 	// supprimer le fichier .tmp
-		new File ("data/"+s+".tmp").delete();
+		new File ("data/text.tmp").delete();
 	}
 }

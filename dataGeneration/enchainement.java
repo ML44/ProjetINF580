@@ -14,7 +14,7 @@ public class enchainement {
 	***/
 	
 	
-	Scanner scan_index = new Scanner(new File("data/" + args[0]+"_index.dat"));
+	Scanner scan_index = new Scanner(new File("data/index.dat"));
 	HashMap<String,Integer> index = new HashMap<String,Integer>();
    
 	String mot;
@@ -43,8 +43,8 @@ public class enchainement {
 		***/
 		
 		
-		Scanner sc = new Scanner(new File("data/" + args[0]+".norm"));
-		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_enchainement.dat")));
+		Scanner sc = new Scanner(new File("data/text.norm"));
+		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/enchainement.dat")));
 
 		String buffer1 = "";
 		String buffer2 = "";

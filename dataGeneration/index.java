@@ -6,8 +6,8 @@ import java.util.Scanner;
 public class index {
 
 	public static void main(String[] args) throws Exception{
-	    Scanner sc = new Scanner(new File("data/" + args[0]+".norm"));
-		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_index.dat")));
+	    Scanner sc = new Scanner(new File("data/text.norm"));
+		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/index.dat")));
 
 	    String buffer = "";
 	    HashMap<String,Integer> table = new HashMap<String,Integer>();
@@ -40,7 +40,7 @@ public class index {
 		out.write(";\n\n");
 		out.close();
 		
-		PrintWriter out_n =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_n.dat")));
+		PrintWriter out_n =  new PrintWriter(new BufferedWriter (new FileWriter("data/n.dat")));
 		
 		out_n.write("param n :=" + (i-1) + " ;");
 		

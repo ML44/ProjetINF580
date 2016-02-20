@@ -1,11 +1,10 @@
 #nlp.run
 model nlp.mod;
-
-data dataGeneration/data/hugo_short_rimes.dat;
-data dataGeneration/data/hugo_short_enchainement.dat;
-data dataGeneration/data/hugo_short_syllabes.dat;
-data dataGeneration/data/hugo_short_index.dat;
-data dataGeneration/data/hugo_short_n.dat;
+data dataGeneration/data/rimes.dat;
+data dataGeneration/data/enchainement.dat;
+data dataGeneration/data/syllabes.dat;
+data dataGeneration/data/index.dat;
+data dataGeneration/data/n.dat;
 
 option solver cplex;
 option cplex_options "mipdisplay=2";

@@ -1,2 +1,0 @@
-tester si les default 0 ne maintiennent pas les variables à 0 ?
-print le vers, et pas x1 et x2 qui sont inutiles.

@@ -15,7 +15,7 @@ public class syllabes {
 		***/
 		
 		
-	Scanner scan_index = new Scanner(new File("data/" + args[0]+"_index.dat"));
+	Scanner scan_index = new Scanner(new File("data/index.dat"));
 	HashMap<Integer,String> index = new HashMap<Integer,String>();
     
 	String mot;
@@ -47,7 +47,7 @@ public class syllabes {
 	
 		
 		
-		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/"+args[0]+"_syllabes.dat")));
+		PrintWriter out =  new PrintWriter(new BufferedWriter (new FileWriter("data/syllabes.dat")));
 
 		out.write("param : syllabes :=\n");
 		out.write("# numero_mot nb_syllabes\n");
