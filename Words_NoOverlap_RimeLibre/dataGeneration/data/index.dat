@@ -1,5 +1,6 @@
 param : index :=
 # mot numero_mot
+0 mot_vide
 1 REPONSEA
 2 UN
 3 ACTE

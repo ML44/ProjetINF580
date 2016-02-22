@@ -14,7 +14,8 @@ public class index {
 	    HashMap<Integer,String> table_inv = new HashMap<Integer,String>();
 
 		
-		
+		table.put("mot_vide",0);
+		table_inv.put(0,"mot_vide");
 		int i = 1;
 	    while(sc.hasNext()){
 	    	buffer = sc.next();
