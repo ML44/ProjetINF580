@@ -9,6 +9,10 @@ param l integer = 2 * nbrePieds;#longueur de la phrase
 set L = 1..l;
 set presqueL = 1..(l-1);
 
+#rime forcée
+param lastWord1 integer;
+param lastWord2 integer;
+
 param syllabes{N} integer, default 0;#nombre de pieds de chaque mot
 param rimes{N} integer;#classe d'équivalence pour la rime
 param enchainement{N, N} integer, default 0;#fréquence à laquelle on a trouvé mot1, mot2
@@ -19,6 +23,10 @@ var m2{L, N} binary, default 0;#m2[b, i] = 1 ssi le b-ième mot du vers 2 est i
 #trick pour éviter les produits dans la fonction objectif : M[b, b+1, i, j] = m[b, i] * m[b+1, j]
 var M1{L, L, N, N} binary, default 0;
 var M2{L, L, N, N} binary, default 0;
+
+#on force le dernier mot
+subject to LastWord1 : m1[l, lastWord1] = 1;
+subject to LastWord2 : m2[l, lastWord2] = 1;
 
 #bon nombre de mots dans la phrase
 subject to NombreDeMots1{b in L} : sum{i in N} m1[b, i] = 1;  

@@ -5,6 +5,7 @@ data dataGeneration/data/enchainement.dat;
 data dataGeneration/data/syllabes.dat;
 data dataGeneration/data/index.dat;
 data dataGeneration/data/n.dat;
+data dataGeneration/data/lastWords.dat;
 
 option solver cplex;
 option cplex_options "mipdisplay=2";

@@ -1,5 +1,6 @@
 param : syllabes :=
 # numero_mot nb_syllabes
+0 0
 1 3
 2 1
 3 2
