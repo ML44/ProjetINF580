@@ -4,7 +4,7 @@ set N = 0..n;
 set presqueN = 1..n;
 param index{N} symbolic;#ensemble des mots
 
-param nbrePieds = 12;
+param nbrePieds = 4;
 param l integer = 2 * nbrePieds;#longueur de la phrase
 set L = 1..l;
 set presqueL = 1..(l-1);

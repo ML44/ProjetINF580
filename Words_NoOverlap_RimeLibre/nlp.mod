@@ -29,7 +29,7 @@ subject to NombreDeSyllabes1 : sum{b in L} sum{i in N} m1[b, i] * syllabes[i] = 
 subject to NombreDeSyllabes2 : sum{b in L} sum{i in N} m2[b, i] * syllabes[i] = nbrePieds;
 
 #les 2 vers riment
-subject to rimeOK : (sum{i in N} m1[l, i] * rimes[i]) = (sum{i in N} m1[l, i] * rimes[i]);
+subject to rimeOK : (sum{i in N} m1[l, i] * rimes[i]) = (sum{i in N} m2[l, i] * rimes[i]);
 
 #empêcher 2 mots de zéro syllabes de se suivre
 subject to AvoidZeroSyllabesWords1{b in presqueL} : m1[b, 0] + sum{i in presqueN} (m1[b, i] * syllabes[i] + m1[b + 1, i] * syllabes[i]) >= 1;
