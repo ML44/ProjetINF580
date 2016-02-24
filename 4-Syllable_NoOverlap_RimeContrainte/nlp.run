@@ -1,0 +1,31 @@
+#nlp.run
+model nlp.mod;
+data dataGeneration/data/enchainement.dat;
+data dataGeneration/data/index.dat;
+data dataGeneration/data/n.dat;
+data dataGeneration/data/lastWords.dat;
+
+option solver cplex;
+option cplex_options "mipdisplay=2";
+solve;
+
+for {b in L} {
+	for{i in N} {
+		if m1[b, i] = 1 then {
+			if i=0 then {}
+			else {printf " %s", index[i];}
+		}
+	}
+}
+
+printf "\n";
+
+for {b in L} {
+	for{i in N} {
+		if m2[b, i] = 1 then {
+			if i=0 then {}
+			else {printf " %s", index[i];}
+		}
+	}
+}
+printf "\n";
