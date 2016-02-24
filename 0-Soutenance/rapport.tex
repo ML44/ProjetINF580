@@ -4,6 +4,7 @@
 \usepackage{lmodern}
 \usepackage[french]{babel}
 \RequirePackage[hidelinks,hyperfootnotes=false]{hyperref}
+\usepackage{dsfont}
 
 \usepackage{ifthen}%Pour la structure conditionnelle
 \usepackage{fancyhdr}%Pour les en-tetes - pieds de page
@@ -119,11 +120,11 @@ On pourra ajouter qu'on désire un programme qui comporte une part d'aléatoire 
 
 \section{Implementations}
 
-\subsection{Gérer les contraintes}
+\subsection{Gestion des contraintes}
 
 \subsubsection{Stockage des mots}
 
-Pour chaque vers on stocke les mots qui apparaissent. Or, on ne connait pas a priori le nombre de mots utilisés mais on uniquement que le nombre de syllabes est fixé à 12. Or en français il ne peut pas y avoir plus d'un mot sur deux qui ne contient pas de voyelle (donc qui compte pour 0 syllabes). Ceci donne une borne supérieure de 24 mots par phrase.
+Pour chaque vers on stocke les mots qui apparaissent. Or, on ne connait pas a priori le nombre de mots utilisés mais on sait que le nombre de syllabes est fixé à 12. En français il ne peut pas y avoir plus d'un mot sur deux qui ne contient pas de voyelle (donc qui compte pour 0 syllabes). Ceci donne une borne supérieure de 24 mots par phrase.
 
 Pour chaque vers, on stocke donc les 24 mots du vers, avec la possibilité que certains mots soient le \textit{mot vide}. Pour plus de simplicité, tous les mots vides sont regroupés au début du vers.
 
@@ -150,7 +151,7 @@ On stocke pour chaque mot $i$ son nombre de syllabes $syl(i)$. On impose donc la
 
 \subsubsection{Les rimes}
 
-A chaque mot $i$ du corpus, on lui assigne sa classe de rime $rim(i)$, qui correspond aux 4 dernières lettres du mot (ou moins s'il est de taille inférieur). On décide donc que deux mots $a$ et $b$ riment si $rim(a) = rim(b)$.
+A chaque mot $i$ du corpus, on lui assigne sa classe de rime $rim(i)$, qui correspond aux 5 dernières lettres du mot (ou moins s'il est de taille inférieur). On décide donc que deux mots $a$ et $b$ riment si $rim(a) = rim(b)$.
 
 La condition de rime des deux vers devient alors :
 
@@ -158,21 +159,57 @@ La condition de rime des deux vers devient alors :
 
 \subsubsection{Le sens du texte}
 
+On cherche à ce que le texte du poème ait un sens. Ceci est évidement une contrainte très forte d'autant plus qu'elle est mal définie. Nous avons décidé de poser des conditions sur l'enchaînements des mots. Lors de la lecture de texte, on compte le nombre de fois qu'un mot succède à un autre. On note $suc(a,b)$ le nombre de fois où les mots $a$ et $b$ se suivent.
+
+La fonction objectif du programme est alors :
+
+\[ \max \quad  \sum_{k=1}^{2} \; \sum_{j_1=1}^{N} \; \sum_{j_2=1}^{N} \; \sum_{i=1}^{23}\qquad \left( x_{i,j_1}^{(k)} \; x_{i+1,j_2}^{(k)} \; suc(j_1, j_2)\right) . \]
+
 \subsubsection{Caractère aléatoire}
+
+Comme cela a déjà été précisé dans les objectifs, le générateur de vers doit aussi avoir un caractère aléatoire : en effet, si les vers générés sont toujours les mêmes, cela limite fortement l'intérêt du projet. La première solution que nous avons trouvée est de gérer à part les fins de vers : en les choisissant de manière aléatoire, on force les vers à changer. Cependant, cet aléatoire n'est que partiel : 
+pour chaque mot, il existe un vers optimal terminant par ce mot. Le générateur de poème est donc toujours d'un intérêt assez limité. 
+
+Nous avons donc cherché à introduire un caractère aléatoire dans la construction même des vers. Pour faire ceci, nous générons pour chaque vers une liste de \textit{mots interdits}. En pratique, nous générons un tableau $alea$ de taille $N$, binaire, initialisé de manière alétoire (en arrondissant la fonction \textit{Uniform} de AMPL). $alea(i)= 0$ signifie que le mot $i$ ne pourra pas être utilisé. Ce tableau est utilisé pour mettre à zéro la valeur des enchainements concernant les mots interdits : on multiplie dans la fonction objectif la bonification $suc(i, j)$ par $alea(i)$ lorsque $j$ est le dernier mot :
+
+\[ \max \quad  \sum_{k=1}^{2} \; \sum_{j_1=1}^{N} \; \sum_{j_2=1}^{N} \quad \left( \sum_{i=1}^{22} \; x_{i,j_1}^{(k)} \; x_{i+1,j_2}^{(k)} \; suc(j_1, j_2)  \; + \;
+x_{23,j_1}^{(k)} \; x_{24,j_2}^{(k)} \; alea(j_1) \; suc(j_1, j_2) \right)
+. \]
+
 
 \subsection{Génération des données}
 
-.dat files
+Le programme nécessite un prétraitement des données : il faut prendre un corpus de textes, les lire et générer les fichiers $\texttt{.dat}$ nécessaires. Ce travail a été effectué en Java. Les textes sont d'abord mis dans un format standart (toutes les lettres en majuscule, suppression des accents et de la ponctuation) puis lus mot à mot. On créé plusieurs tables de hachage qui assignent à nouveau mot un nombre (l'index), une classe de rime, un nombre de syllabes, et de même on compte les occurences de successions.
+
+Afin de compter les syllabes, on compte le nombre d'occurence d'une succession consonne-voyelle en supposant que le mot commence par une consonne fictive. Plus précisément, soit $m = m_1m_2m_3 \ldots m_{k-1}m_k$ un mot, on compte (avec $m_0$ une consonne) :
+
+
+\[ syl(m) = \sum_{i=1}^{k} \mathds{1}_{(m_{i-1} \text{ est une consonne})} \mathds{1}_{(m_{i} \text{ est une voyelle})}.\]
+
+
+Les rimes sont déterminées par les 5 dernières lettres d'un mot. Afin de déterminer les mots à la fin des vers, on choisit aléatoirement une classe de rimes parmi celles qui contiennent au moins deux éléments (et telle que la rime commune fait au moins 3 caractères), puis on tire aléatoirement deux éléments différents dans cette classe. 
+
+\section{Résultats et autres approches}
+
+\subsection{Résultat}
+
+Le programme tel que défini ci-dessus fonctionne bien. Sur un texte d'une longueur de 5000 vers, il lui faut environ 2 secondes de calcul par couple de vers. Le résultat a été légèrement adapté pour générer des sonnets (poèmes de 14 vers). On remarque néanmoins une tendance à favoriser les mots courts (monosyllabes). On pourrait ajouter un bonus à la longueur en multipliant la fonction objectif par le nombre de syllabes.
 
 \subsection{Autres approches}
 
+Nous avons également essayé d'autres approches plus ambitieuses mais qui n'ont pas donné de résultat satisfaisant.
+
 \subsubsection{Approche globale}
+
+%TODO
 
 \subsubsection{Syllabe par syllabe}
 
+Au lieu de construire les vers mot à mot, nous avons imaginé le faire syllabe par syllabe. L'avantage est qu'on n'a plus la contrainte sur la somme des syllabes des mots puisqu'il suffit de choisir 12 syllabes par vers. Néanmoins si l'on procède ainsi le texte n'a pas de sens.
+
 \subsubsection{Par groupes de mots}
 
-\section{Conclusion}
+\subsection{Exemple de sonnet généré}
 
 \begin{footnotesize}
 \begin{itshape}
