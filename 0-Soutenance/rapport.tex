@@ -95,7 +95,11 @@
 \vspace{1cm}
 
 \begin{abstract}
-Natural Language Processing ... blah
+Pour ce projet, nous avons décidé de nous attaquer à un problème de Natural Language Processing en prenant l'angle d'attaque fourni par le cours, à savoir la programmation mathématique. Il s'agit d'un problème connu, difficile et évidemment non complètement résolu. Pour ajouter un côté 
+ludique à ce problème, nous avons décidé de tenter de faire écrire de la poésie à un programme informatique, en l'entrainant sur des textes en vers d'auteurs français. 
+Nous avons dû modéliser ce problème dans les termes de la programmation mathématique (et plus particulièrement de la programmation linéaire) 
+et donc trouver des variables, contraintes et une fonction objectif qui permettent de réaliser ce que nous nous étions fixé. 
+Après plusieurs tentatives infructueuses, nous avons obtenu un modèle qui permet d'obtenir des résultats tout à fait convaincants en un temps raisonnable.
 \end{abstract}
 
 \vfill
@@ -118,7 +122,7 @@ Notre objectif a été d'obtenir un programme capable d'écrire des poèmes. Pou
 
 On pourra ajouter qu'on désire un programme qui comporte une part d'aléatoire puisqu'on souhaite générer des poèmes différents à chaque appel.
 
-\section{Implementations}
+\section{Implementation}
 
 \subsection{Gestion des contraintes}
 
@@ -176,6 +180,10 @@ Nous avons donc cherché à introduire un caractère aléatoire dans la construc
 x_{23,j_1}^{(k)} \; x_{24,j_2}^{(k)} \; alea(j_1) \; suc(j_1, j_2) \right)
 . \]
 
+\subsubsection{Linéarisation}
+
+\`A cette étape du raisonnement, nous disposons des variables, des contraintes et de la fonction objectif. Cependant, la fonction objectif contient un produit de deux termes de la forme $x_{i,j}^{(k)}$, donc le problème ainsi formulé fait appel à de la programmation non linéaire. Pour résoudre cela, on peut appliquer l'astuce de reformulation vue en cours : on remplace $ x_{i,j}^{(k)} x_{i+1,j}^{(k)}$
+par une unique variable grâce à quelques inégalités astucieuses.
 
 \subsection{Génération des données}
 
@@ -201,13 +209,16 @@ Nous avons également essayé d'autres approches plus ambitieuses mais qui n'ont
 
 \subsubsection{Approche globale}
 
-%TODO
+Plutôt que de fixer arbitrairement les derniers mots a priori, nous avions pensé laisser maximiser sur l'ensemble des mots, avec comme condition que les mots finaux des deux vers appartiennent à la même catégorie de rime. Mais le champ des possibles est trop large et le temps de calcul est beaucoup trop long pour obtenir des résultats.
+
+\subsubsection{Par groupes de mots}
+
+Suite à l'échec de l'approche globale, une solution intermédiaire consisterait à diviser chaque vers en groupes de mots qu'on traite indépendement, mais tels que le dernier mot de la première moitié est le même que le premier de la seconde moitié. Néanmoins, même en découpant en groupes de deux mots, le temps de calcul reste trop long et la mémoire explose pour un texte de longueur significative.
+
 
 \subsubsection{Syllabe par syllabe}
 
-Au lieu de construire les vers mot à mot, nous avons imaginé le faire syllabe par syllabe. L'avantage est qu'on n'a plus la contrainte sur la somme des syllabes des mots puisqu'il suffit de choisir 12 syllabes par vers. Néanmoins si l'on procède ainsi le texte n'a pas de sens.
-
-\subsubsection{Par groupes de mots}
+Au lieu de construire les vers mot à mot, nous avons imaginé le faire syllabe par syllabe. L'avantage est qu'on n'a plus la contrainte sur la somme des syllabes des mots puisqu'il suffit de choisir 12 syllabes par vers. Néanmoins si l'on procède ainsi le texte n'a pas de sens. La fonction objectif qui maximise les fréquences de succession d'une syllabe par rapport à l'autre ne suffit pas, mais imposer la contrainte que les syllabes doivent former un mot d'un dictionnaire est beaucoup trop forte. On pourrait calculer les successions sur trois syllabes. En réalité le problème principal est qu'on ne sait pas bien comment définir les syllabes : où couper dans les mots ? C'est bien plus difficile que simplement compter les syllabes. On n'obtient donc pas de résultat satisfaisant.
 
 \subsection{Exemple de sonnet généré}
 
