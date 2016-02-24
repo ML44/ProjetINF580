@@ -18,7 +18,7 @@ param NombrePieds = 12;
 param l = 2 * NombrePieds;
 set L = 1..25;
 set presqueL = 1..24;
-set I = 1..8;
+set I = 1..12;
 
 param phrase1{L};
 param phrase2{L};
@@ -30,11 +30,10 @@ let LongueurMax := 12 - syllabes[lastWord];
 
 for{i in I}{
 	solve;
-	let lastWord := sum {j in N} mot3[j]*j;
-	let phrase1[27-3*i] := sum {j in N} mot1[j]*j;
-	let phrase1[26-3*i] := sum {j in N} mot2[j]*j;
-	let phrase1[25-3*i] := sum {j in N} mot3[j]*j;
-	let LongueurMax := LongueurMax - (syllabes[phrase1[27-3*i]] + syllabes[phrase1[26-3*i]] + syllabes[phrase1[25-3*i]]);
+	let lastWord := sum {j in N} mot2[j]*j;
+	let phrase1[26-2*i] := sum {j in N} mot1[j]*j;
+	let phrase1[25-2*i] := sum {j in N} mot2[j]*j;
+	let LongueurMax := LongueurMax - ( + syllabes[phrase1[26-2*i]] + syllabes[phrase1[25-2*i]]);
 }
 
 #calcul du second vers
@@ -44,11 +43,10 @@ let LongueurMax := 12 - syllabes[lastWord];
 
 for{i in I}{
 	solve;
-	let lastWord := sum {j in N} mot3[j]*j;
-	let phrase2[27-3*i] := sum {j in N} mot1[j]*j;
-	let phrase2[26-3*i] := sum {j in N} mot2[j]*j;
-	let phrase2[25-3*i] := sum {j in N} mot3[j]*j;
-	let LongueurMax := LongueurMax - (syllabes[phrase2[27-3*i]] + syllabes[phrase2[26-3*i]] + syllabes[phrase2[25-3*i]]);
+	let lastWord := sum {j in N} mot2[j]*j;
+	let phrase2[26-2*i] := sum {j in N} mot1[j]*j;
+	let phrase2[25-2*i] := sum {j in N} mot2[j]*j;
+	let LongueurMax := LongueurMax - ( + syllabes[phrase2[26-2*i]] + syllabes[phrase2[25-2*i]]);
 }
 
 
