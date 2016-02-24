@@ -1,0 +1,83 @@
+#nlp.run
+model nlp.mod;
+param lastWord1;
+param lastWord2;
+
+data dataGeneration/data/rimes.dat;
+data dataGeneration/data/enchainement.dat;
+data dataGeneration/data/syllabes.dat;
+data dataGeneration/data/index.dat;
+data dataGeneration/data/n.dat;
+data dataGeneration/data/lastWord.dat;
+
+#graine du random
+option randseed 0;
+
+option solver cplex;
+option cplex_options "mipdisplay=2";
+
+
+param NombrePieds = 12;
+param l = 2 * NombrePieds;
+set L = 1..25;
+set presqueL = 1..24;
+set I = 1..12;
+
+param phrase1{L};
+param phrase2{L};
+
+#calcul du premier vers
+let lastWord := lastWord1;
+let phrase1[25] := lastWord;
+let LongueurMax := 12 - syllabes[lastWord];
+
+#choosing the word we won't use
+for{p in N}{
+	let alea1[p] := round(Uniform(0, 1.4));#1.4 is an artibtrary threshold, it can be fixed at any value
+	let alea2[p] := round(Uniform(0, 1.4));
+}
+let alea1[0] := 1;#authorize the use of empty word
+let alea2[0] := 1;
+
+for{i in I}{
+	solve;
+	let lastWord := sum {j in N} mot2[j]*j;
+	let phrase1[26-2*i] := sum {j in N} mot1[j]*j;
+	let phrase1[25-2*i] := sum {j in N} mot2[j]*j;
+	let LongueurMax := LongueurMax - ( + syllabes[phrase1[26-2*i]] + syllabes[phrase1[25-2*i]]);
+}
+
+#calcul du second vers
+let lastWord := lastWord2;
+let phrase2[25] := lastWord;
+let LongueurMax := 12 - syllabes[lastWord];
+
+#choosing the word we won't use
+for{p in N}{
+	let alea1[p] := round(Uniform(0, 1.4));#1.4 is an artibtrary threshold, it can be fixed at any value
+	let alea2[p] := round(Uniform(0, 1.4));
+}
+let alea1[0] := 1;#authorize the use of empty word
+let alea2[0] := 1;
+
+for{i in I}{
+	solve;
+	let lastWord := sum {j in N} mot2[j]*j;
+	let phrase2[26-2*i] := sum {j in N} mot1[j]*j;
+	let phrase2[25-2*i] := sum {j in N} mot2[j]*j;
+	let LongueurMax := LongueurMax - ( + syllabes[phrase2[26-2*i]] + syllabes[phrase2[25-2*i]]);
+}
+
+
+for {b in L} {
+	if phrase1[b] >= 1 then printf " %s", index[phrase1[b]];
+}
+
+printf "\n";
+
+for {b in L} {
+	if phrase2[b] >= 1 then printf " %s", index[phrase2[b]];
+}
+
+printf "\n";
+

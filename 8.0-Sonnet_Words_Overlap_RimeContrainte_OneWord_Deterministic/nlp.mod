@@ -16,7 +16,7 @@ var mot{N} binary, default 0;#mot[i] = 1 ssi le mot choisi est le mot i
 subject to NotTooMuchSyllables : sum{i in N} syllabes[i]*mot[i] <= LongueurMax;
 
 #empêcher l'usage du mot vide si on doit encore rajouter des syllabes, et forcer son usage si on n'a plus de syllabes
-subject to EmptyWordUse1 : mot[0]*LongueurMax = 0;
+subject to EmptyWordUse1 : mot[0] * LongueurMax = 0;
 subject to EmptyWordUse2 : mot[0] + LongueurMax >= 1;
 
 #empêcher 2 mots de zéro syllabes de se suivre s'il reste plus des syllabes
@@ -25,4 +25,4 @@ subject to No2ZeroSyllablesWords : sum{i in N} mot[i]*syllabes[i] + syllabes[las
 #ne sélectionner qu'un seul mot
 subject to OnlyOneWord : sum{i in N} mot[i] = 1;
 
-maximize objective : sum{i in N} enchainement[i, lastWord]*mot[i];
+maximize objective : sum{i in N} enchainement[i, lastWord] * mot[i];
