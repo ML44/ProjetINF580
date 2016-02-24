@@ -1,0 +1,215 @@
+\documentclass[a4paper,11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[french]{babel}
+\RequirePackage[hidelinks,hyperfootnotes=false]{hyperref}
+
+\usepackage{ifthen}%Pour la structure conditionnelle
+\usepackage{fancyhdr}%Pour les en-tetes - pieds de page
+\usepackage{titling}%Pour la redefinition de \maketitle
+\usepackage{graphicx}%Pour les logos inseres
+\fancyhf{}
+\cfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\ifthenelse{\lengthtest{\footskip<1.3cm}}{\setlength{\footskip}{1.3cm}}{}
+
+\fancyfoot[RO,LE]{\raisebox{0.3cm}\thepage}
+\fancyfoot[RE,LO]{\includegraphics[height=1cm]{img/logohori}}
+\rhead{}
+\lhead{}
+\pagestyle{fancy}
+
+\usepackage{amsmath,amsthm,amsfonts,amssymb,amscd,mathrsfs}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Fp}{\mathbb{F}_p}
+\newcommand{\C}{\mathbb{C}}
+
+\renewcommand{\S}{\mathfrak{S}}
+\renewcommand{\L}{L^{\sharp}}
+\newcommand{\M}{M^{\sharp}}
+\newcommand{\NN}{N^{\sharp}}
+\newcommand{\e}{e^{\ast}}
+\newcommand{\f}{f^{\ast}}
+\newcommand{\res}{\text{res}\,}
+\newcommand{\cov}{\text{cov}\,}
+\newcommand{\disc}{\text{disc}\,}
+
+\newtheorem{theorem}{Théorème}
+\newtheorem{prop}[theorem]{Propriété}
+\newtheorem{deff}[theorem]{Définition}
+\newtheorem{lem}[theorem]{Lemme}
+
+\usepackage{mathtools}
+
+\newcommand*{\titrecourt}{}
+
+\setlength{\droptitle}{-1in}
+
+\pretitle{
+   \begin{center}
+   \includegraphics[height=4cm]{img/logovert.jpg} 
+   \\\vspace{0.5cm}
+   \rule{\textwidth}{2pt}
+   % \end{center}
+   \\\vspace{0.3cm}\Large\sffamily
+}
+\posttitle{
+   \\[-0.1cm]
+   \rule{\textwidth}{2pt}
+   \end{center}
+   \chead{\textsc{\ifthenelse{\equal{\titrecourt}{}}{\thetitle}{\titrecourt}}}
+}
+
+\preauthor{\noindent}
+\postauthor{}
+
+\predate{\hspace*{\fill}}
+\postdate{}
+
+%%%%%%%%%%
+%%%%%%%%%%
+
+\title{INF580: Mathematical Programming \\ Projet : Générateur de poésie}
+\author{Matthieu \textsc{Lequesne} \& Quentin \textsc{Lisack}}
+\date{24 février 2016}
+
+\renewcommand{\titrecourt}{INF580 : Générateur de poésie}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+\maketitle
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\vspace{1cm}
+
+\begin{abstract}
+Natural Language Processing ... blah
+\end{abstract}
+
+\vfill
+
+\newpage
+
+\section{Objectif du projet}
+
+Notre objectif a été d'obtenir un programme capable d'écrire des poèmes. Pour cela, on a réduit le problème à un programme qui écrit deux vers qui riment. En répétant cette opération, on peut créer des poèmes de taille arbitraire. Nous nous somme placé dans le cadre classique de vers de 12 syllabes, mais cette donnée importe assez peu. Le programme doit donc avoir les spécification suivantes :
+
+\begin{itemize}
+\item Entrée : un corpus de textes poétiques.
+\item Sortie : deux vers, tels que :
+\begin{itemize}
+\item chaque vers comporte 12 syllabes ;
+\item les deux vers riment (mais sont différents) ;
+\item le texte a un sens.
+\end{itemize}
+\end{itemize}
+
+On pourra ajouter qu'on désire un programme qui comporte une part d'aléatoire puisqu'on souhaite générer des poèmes différents à chaque appel.
+
+\section{Implementations}
+
+\subsection{Gérer les contraintes}
+
+\subsubsection{Stockage des mots}
+
+Pour chaque vers on stocke les mots qui apparaissent. Or, on ne connait pas a priori le nombre de mots utilisés mais on uniquement que le nombre de syllabes est fixé à 12. Or en français il ne peut pas y avoir plus d'un mot sur deux qui ne contient pas de voyelle (donc qui compte pour 0 syllabes). Ceci donne une borne supérieure de 24 mots par phrase.
+
+Pour chaque vers, on stocke donc les 24 mots du vers, avec la possibilité que certains mots soient le \textit{mot vide}. Pour plus de simplicité, tous les mots vides sont regroupés au début du vers.
+
+En réalité, on ne travaille pas avec les mots (les chaînes de caractères) mais chaque mot qui apparaît dans le corpus initial est identifié par un numéro. Soit $N$ le nombre de mots différents. On a donc des variables :
+
+\[x_{i,j}^{(k)} =
+\begin{cases} 
+1 & \mbox{si le } i \mbox{\textsuperscript{ème} mot du vers } k \mbox{ est } j \\ 
+0 & \mbox{sinon.} 
+\end{cases}
+ \]
+
+avec $1 \leq i \leq 24, 1 \leq j \leq N$ et $1 \leq k \leq 2$.
+
+On impose qu'il y a un et un unique mot par position :
+
+\[\forall k \in \{1,2\}, \forall i \leq N, \qquad \sum_{j=1}^{N} x_{i,j} = 1.\]
+
+\subsubsection{Le nombre de syllabes}
+
+On stocke pour chaque mot $i$ son nombre de syllabes $syl(i)$. On impose donc la contrainte suivante :
+
+\[\forall k \in \{1,2\}, \qquad \sum_{i=1}^{24} \sum_{j=1}^{N} x_{i,j}^{(k)} syl(j) = 12.\]
+
+\subsubsection{Les rimes}
+
+A chaque mot $i$ du corpus, on lui assigne sa classe de rime $rim(i)$, qui correspond aux 4 dernières lettres du mot (ou moins s'il est de taille inférieur). On décide donc que deux mots $a$ et $b$ riment si $rim(a) = rim(b)$.
+
+La condition de rime des deux vers devient alors :
+
+\[ \sum_{j=1}^{N} x_{24,j}^{(1)}  rim(j) = \sum_{j=1}^{N} x_{24,j}^{(2)}  rim(j). \]
+
+\subsubsection{Le sens du texte}
+
+\subsubsection{Caractère aléatoire}
+
+\subsection{Génération des données}
+
+.dat files
+
+\subsection{Autres approches}
+
+\subsubsection{Approche globale}
+
+\subsubsection{Syllabe par syllabe}
+
+\subsubsection{Par groupes de mots}
+
+\section{Conclusion}
+
+\begin{footnotesize}
+\begin{itshape}
+ SI BIEN RACE D UN SOMBRE ET DU DIFFORME
+
+ CE CHAT I RACE D OU SUR LE VIN INFORME
+
+ VIE ET SOMBRE ET DE MA VIE ET D UN ORDRE
+
+ LE COEUR ET BRULE JUSQU AU FOND DE PERDRE
+\medskip
+
+ PLEIN DE TOI BIZARRE DEITE DEITE BRUNE
+
+ DE LA VIE ET SOMBRE ET DE LA VIE ET BRUNS
+
+ COEUR PLEIN DE MA VIE ET QUE JE TE COMPARER
+ 
+ NATURE AINSI QU A LA VIE ET PAREE
+\medskip
+
+ YEUX DE LA VIE ET DE L ON MEPRISE SALUE
+ 
+ ET D AUSSI PETITS RACE D UN DECOR SALUT
+ 
+ ET VOTRE PURE LUMIERE ET QUI S EFFRAYA
+\medskip
+
+ ET BRULE PRENDS PITIE DE LA VIE ET LES FRAYE
+ 
+ LA VIE ET DE TA VIE ET DANS LES NATIVE
+ 
+ LA VIE ET COMME UNE NUIT FUGITIVE
+
+\end{itshape}
+\end{footnotesize}
+
+ 
+
+\end{document}

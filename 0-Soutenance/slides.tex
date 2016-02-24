@@ -1,0 +1,311 @@
+
+% Simple beamer file.  Run Latex on it in the usual way.
+
+
+\documentclass[unknownkeysallowed]{beamer}
+\usepackage[utf8]{inputenc}       	%% These two packages are required
+\usepackage[french]{babel}	%% to type in French with accents.
+\usepackage{epstopdf}			%% Package to convert .eps (encapsulated postscript files to pdf)
+\usepackage{tikz}			%% Image manipulation to change opacity, position etc. for watermarks!
+\usepackage{amsmath, amsthm, amssymb}	%% Normal math-y things
+\usepackage{nicefrac}			%% Really sexy package to make sexy fractions.
+\usepackage{listings} 		%% To write code
+\usepackage{color}
+\usepackage{multicol}
+\setlength{\columnseprule}{0.5pt}
+\usepackage[T1]{fontenc}
+
+%% [[ DEFINING `POLYTECHNIQUE' COLOURS
+\definecolor{Blue}{RGB}{0,59,92}
+\definecolor{Grey}{RGB}{74,73,72}
+\definecolor{Red}{RGB}{247,38,22}
+\definecolor{DarkRed}{RGB}{197,26,27}
+\definecolor{Yellow}{RGB}{223,176,0}
+\definecolor{White}{RGB}{255,255,255}
+%% END POLYTECHNIQUE COLORS]]
+
+
+
+%%[[ SETTING COLOURS FOR DIFFERENT PROPERTIES 
+%% Check out the beamer cheatsheet (Google is your friend) to find the options like 'title' etc.
+\setbeamercolor{title}{fg=Blue}					%% Colour of title text
+\setbeamercolor{frametitle}{fg=Blue}				%% Color of frame titles
+\setbeamercolor{structure}{fg=Blue}
+\setbeamercolor{itemize/enumerate body}{fg=Grey}		%% Colour of words in an itemised list
+\setbeamercolor{itemize/enumerate subbody}{fg=black}		%% Colour of words in an itemised sublist
+\setbeamercolor{itemize subitem}{fg=Grey}			%% Colour of bullet points in the sublist
+\setbeamercolor{normal text}{fg=DarkRed}			%% Colour of normal text
+\setbeamercolor{section in toc}{fg=Grey}			%% Colour of sections in the Table of Contents
+\setbeamercolor{institute}{fg=Blue}				%% Colour of institute in Table of Contents
+\setbeamercolor{footlinecolor}{fg=White,bg=Blue}		%% Colour of footline bar
+%% END SETTING COLOURS FOR PROPERTIES]]
+
+
+
+
+%% [[CODE FOR HORIZONTAL LINE UNDER TITLE
+%% The header in this template is simply a horizontal line. The addition of a subtitle will 
+%% make the presentation ugly (as the line will pass through it) and thus you would need to 
+%% change the y coordinate of the line. This is done at the line:
+%% \pgfline{\pgfpoint{x-start}{y-start}}{\pgfpoint{x-end}{y-end}}
+%% where (x-start,y-start) and (x-end,y-end) are the beginning and end points of the line.
+
+\newcommand{\LogoLine}{%				%% Define a bunch of characteristics we call \Logoline
+\raisebox{-12mm}[0pt][0pt]{%
+\begin{pgfpicture}{0mm}{0mm}{0mm}{0mm}
+\pgfsetlinewidth{0.28mm}
+\color{Grey}
+\pgfline{\pgfpoint{-6.5mm}{1mm}}{\pgfpoint{10cm}{1mm}}
+\end{pgfpicture}}}
+
+\setbeamertemplate{headline}[text line]{\LogoLine } 	%% Use \Logoline to make a header.
+%% END CODE FOR HORIZONTAL LINE UNDER TITLE]]
+
+
+%% [[CODE FOR FOOTINE				%% We could do this as before with the header, but we combine the two steps into one directly.
+\makeatletter					%% This is required to make the '@' symbol a character, we'll revert this later.
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%					%% Create a horizontal box for the total page length.
+ \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex,center]{footlinecolor}%% Within this box, create a beamercolorbox with [width,height,depth]
+    \usebeamerfont{title in head/foot}\insertsection %% Insert the name of the section
+  \end{beamercolorbox}% 			%% End the box. (Note, the '%' after '\end{beamercolorbox} is necessary to create a carriage return.
+  
+  \begin{beamercolorbox}[wd=.5\paperwidth,ht=2.25ex,dp=1ex]{footlinecolor}%    %% Create a second box, etc.
+    \usebeamerfont{title in head/foot}\inserttitle \hfill \insertframenumber \,\,\,\,%
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\makeatother					%% We make the '@' symbol back to a \TeX\ command
+%% END CODE FOR FOOTLINE]]
+
+
+\setbeamertemplate{navigation symbols}{} 	%% Remove navigation symbols. (I hate them, I hate them, I hate them...)
+
+\setbeamertemplate{itemize items}[circle]	%% Use circle bullet points (triangles are default, you can also use 'square' and 'ball'.) 
+
+
+
+\title{Mathematical Programming : Writing poetry}	%% Pretty self-explanatory, no?
+\author{Matthieu Lequesne \& Quentin Lisack}						%%
+\institute{École polytechnique}					%%
+\date[]{24 février 2016}
+
+
+\newcommand{\high}[1]{\textcolor{DarkRed}{#1}}			%% I sometimes need to highlight things. Usually I make 'em bold, sometimes not.
+
+
+\AtBeginSection[] {				
+% Comment out this section if  you don't want the table of contents before EVERY section
+{						
+% If so, make sure you copy *everything* after the \AtBeginSection and put it where you want the TOC.
+%% Large polytechnique logo on the right hand side of the page ONLY for the Table of Contents. (That's why it's in the {}s )
+\setbeamertemplate{background canvas}{
+	\tikz[remember picture,overlay]
+	{
+		\node[opacity=0.2] at (current page.east) 	
+		{\includegraphics[width=8cm,keepaspectration]{./img/blazon}} ;
+	}
+}
+\setbeamertemplate{footline}{}  %% Removes footline for the table of contents page, 'cause it's UGLY
+\begin{frame}
+ \frametitle{Table des matières}
+ \tableofcontents[currentsection]
+ \addtocounter{framenumber}{-1}% You don't want them to affect the slide number, do you?
+\end{frame}
+}
+}
+
+
+
+%%%%% For JAVA
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+ 
+\lstset{language=Java,
+basicstyle=\ttfamily\scriptsize,
+keywordstyle=\color{javapurple}\bfseries,
+stringstyle=\color{javared},
+commentstyle=\color{javagreen},
+morecomment=[s][\color{javadocblue}]{/**}{*/},
+numbers=left,
+numberstyle=\tiny\color{black},
+stepnumber=1,
+numbersep=10pt,
+tabsize=4,
+showspaces=false,
+showstringspaces=false
+breaklines=true
+}
+
+
+\begin{document}
+% Title slide
+{
+%% The next two lines define the logo on the first page using the tikz package to add an image to the template of the 'background canvas'.
+%% The \node[] function tells it *where* to place the center of the image. Thus, \node[] at (current page.south east) places the image center 
+%% at the south east corner. We want it to be slightly off-centered, and so we use the \node[] function with a 'shift' argument, where 
+%% \node[shift={(x,y)}] shifts the node by a distance -x, -y away from the (in this case) south east point.  The option opacity controls, well.. ;P
+%%\setbeamertemplate{background canvas}{
+%%\tikz[remember picture,overlay]\node[shift={(-1.25cm,1.25cm)},opacity=0.8] at (current page.south east) {\includegraphics[width=8cm, keepaspectration]{./img/escher1.png}};
+% \tikz[remember picture,overlay]\node[shift={(0cm,-1.5cm)},opacity=1] at (current page.north) {\includegraphics[width=0.75cm,keepaspectration]{./img/EPred}};
+%}
+\frame[plain]{\titlepage}
+}
+
+
+
+% First non-title slide
+%% Use Polytechnique coat of arms at the top right corner for all slides after this, between the following { }s.
+
+\setbeamertemplate{background canvas}{
+	\tikz[remember picture,overlay]
+	\node[shift={(-1cm,-1.25cm)},opacity=0.5] at (current page.north east) 			
+	{\includegraphics[width=1.25cm, keepaspectration]{./img/blazon}}
+	;
+}
+
+
+
+\section{Our goal}
+
+\begin{frame}{Our goal}
+
+
+\begin{quote}
+\og Don’t use the phone. People are never ready to answer it. Use poetry. \fg
+\flushright \textsc{Jack Kerouack}
+\end{quote}
+
+\begin{itemize}
+\item Writing two verses.
+\item Each verse is 12 syllables long.
+\item Last words rhyme together.
+\item Sentences make sense.
+\end{itemize}
+\end{frame}
+
+
+
+\section{Implementation}
+
+
+\begin{frame}[fragile]{First try}
+\begin{itemize}
+\item Index words
+\item Rhymes
+\begin{itemize}
+\item Each word belongs to a rhyme class
+\item The last words must belong to the same class
+\end{itemize}
+\item Syllables
+\begin{itemize}
+\item For each word have the number of syllables
+\item The sum of syllables in each verse has to be 12
+\end{itemize}
+\item Make sense
+\begin{itemize}
+\item Read a long text
+\item Compute how frequently one word follows another
+\item Maximize the sum of frequencies 
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{First try}
+\begin{itemize}
+\item .dat files
+\item Table of words
+\item The empty word
+\item Linearization
+\end{itemize}
+
+Problems: 
+
+\begin{itemize}
+\item<2-> Deterministic
+\item<2-> Time of the universe
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Second try}
+\begin{itemize}
+\item Choose the rhyme randomly
+\medskip
+\item Split and overlap : two tables of 8 words
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Another approach}
+\begin{itemize}
+\item Syllable by syllable
+\medskip
+
+\begin{itemize}
+\item Drop the 12-syllables constraint
+\medskip
+
+\item Need to have real words ? 
+\medskip
+
+\begin{itemize}
+\item Too strong
+\medskip
+
+\item Look like real words
+\end{itemize}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Sequencial approach}
+\begin{itemize}
+\item Construct the sentence word by word from the end
+\medskip
+
+\item Greedy knapsack problem
+\medskip
+
+\item Works pretty well
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]{Combining strategies}
+\begin{itemize}
+\item Construct the sentence 3 words by 3 words from the end
+\medskip
+
+\item Best achievement so far, but still too long
+\end{itemize}
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}[fragile]{Conclusion}
+\begin{quote}
+\small
+\og LA PROSE ET DE L ON NOMME ETIQUETTE \\
+ PROSE ET J AI VU PAR TOUS LES CIEUX ALOUETTE \fg
+\end{quote}
+
+\begin{itemize}
+\item Data generation: have better definitions of
+\begin{itemize}
+\item The number of syllables (too rough)
+\item The rhyme classes (too strong)
+\item Liaisons
+\end{itemize}
+\item Have more powerful solvers
+\item Read longer texts
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}

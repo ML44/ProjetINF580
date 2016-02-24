@@ -1,12 +1,17 @@
 .PHONY: all view
 
-all : simple.pdf
-	rm -f *.log *.aux *.out *.dvi *.bbl *.blg *.synctex.gz *.fdb_latexmk *.fls *.snm *.nav *.toc *.vrb
+all : rapport.pdf
+	rm -f *.log *.aux *.out *.dvi *.bbl *.blg *.synctex.gz *.fdb_latexmk *.fls *.snm *.nav *.toc
+	
+rapport.pdf : clean
+	pdflatex rapport.tex
+	pdflatex rapport.tex
+	open rapport.pdf
 
-simple.pdf : clean
-	pdflatex simple.tex
-	pdflatex simple.tex
-	open simple.pdf
+slides.pdf : clean
+	pdflatex slides.tex
+	pdflatex slides.tex
+	open slides.pdf
 
 clean :
 	rm -f *.log *.aux *.out *.dvi *.bbl *.blg *.synctex.gz *.fdb_latexmk *.fls *.snm *.nav *.toc
