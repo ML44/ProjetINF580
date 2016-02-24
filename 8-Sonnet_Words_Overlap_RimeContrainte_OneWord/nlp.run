@@ -1,0 +1,49 @@
+#nlp.run
+model nlp.mod;
+
+
+data dataGeneration/data/rimes.dat;
+data dataGeneration/data/enchainement.dat;
+data dataGeneration/data/syllabes.dat;
+data dataGeneration/data/index.dat;
+data dataGeneration/data/n.dat;
+
+set NbreVers = 1..14;
+param lastWordArray{NbreVers};
+
+data dataGeneration/data/lastWord.dat;
+
+option solver cplex;
+option cplex_options "mipdisplay=2";
+
+
+param NombrePieds = 12;
+param l = 2 * NombrePieds;
+set L = 1..l;
+set presqueL = 1..l-1;
+
+param phrase{NbreVers, L} default 0;
+
+for{k in NbreVers}{
+	let lastWord := lastWordArray[k];
+	let phrase[k, l] := lastWord;
+	let LongueurMax := 12 - syllabes[lastWord];
+
+	for{i in presqueL}{
+		solve;
+		let lastWord := sum {j in N} mot[j]*j;
+		let phrase[k, l-i] := lastWord;
+		let LongueurMax := LongueurMax - syllabes[lastWord];
+	}
+
+}
+
+
+
+for{k in NbreVers}{
+	for {b in L} {
+		if phrase[k, b] >= 1 then printf " %s", index[phrase[k, b]];
+	}
+	printf "\n";
+}
+

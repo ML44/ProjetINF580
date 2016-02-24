@@ -19,8 +19,8 @@ param l = 2 * NombrePieds;
 set L = 1..l;
 set presqueL = 1..l-1;
 
-param phrase1{L};
-param phrase2{L};
+param phrase1{L} default 0;
+param phrase2{L} default 0;
 
 #calcul du premier vers
 let lastWord := lastWord1;
